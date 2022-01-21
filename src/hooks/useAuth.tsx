@@ -76,6 +76,23 @@ function AuthProvider({ children }: AuthProviderProps) {
       .finally(() => setIsLogging(false))
   }
 
+  async function loadUserStorageDate() {
+    setIsLogging(true);
+
+    const storedUser = await AsyncStorage.getItem(USER_COLLECTION)
+    
+    if (storedUser) {
+      const userData = JSON.parse(storedUser) as User;
+      setUser(userData);
+      console.log(userData);
+    }
+
+    setIsLogging(false)
+  }
+
+  useEffect(() => {
+    loadUserStorageDate();
+  }, [])
 
   return (
     <AuthContext.Provider value={{ isLogging, user, SignIn }}>
