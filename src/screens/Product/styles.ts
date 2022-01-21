@@ -2,6 +2,8 @@ import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
+import { Button } from "../../components/Button";
+
 export const Container = styled.KeyboardAvoidingView`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
@@ -21,6 +23,21 @@ export const DeletarLabel = styled.Text`
   font-size: 14px;
   font-family: ${({ theme }) => theme.FONTS.TEXT};
   color: ${({ theme }) => theme.COLORS.TITLE};
+`;
+
+export const Upload = styled.View`
+  width: 100%;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  margin: 32px 0;
+`;
+
+export const PickerImagemButton = styled(Button)`
+  max-width: 90px;
+  margin-left: 32px;
 `;
 
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
