@@ -6,6 +6,7 @@ import {
 
 import brandImg from '../../assets/png/brand.png'
 
+import { useAuth } from "../../hooks/useAuth";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 
@@ -19,7 +20,14 @@ import {
 } from './styles';
 
 export function SignIn() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { SignIn, isLogging } = useAuth();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleSignIn() {
+    SignIn(email, password)
+  }
 
   return (
     <Container>
@@ -34,12 +42,16 @@ export function SignIn() {
             placeholder="E-mail"
             autoCorrect={false}
             autoCapitalize="none"
+            onChangeText={setEmail}
+            value={email}
           />
 
           <Input
             type="secondary"
             placeholder="Senha"
             secureTextEntry
+            onChangeText={setPassword}
+            value={password}
           />
 
           <ForgotPasswordButton>
@@ -49,7 +61,8 @@ export function SignIn() {
           <Button
             title="Entrar"
             type="secondary"
-            isLoaded={isLoaded}
+            isLoaded={isLogging}
+            onPress={handleSignIn}
           />
         </Content>
 
