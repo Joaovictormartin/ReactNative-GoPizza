@@ -16,7 +16,7 @@ export const Title = styled.Text`
 `;
 
 export const DeletarContainer = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.6
+  activeOpacity: 0.6,
 })``;
 
 export const DeletarLabel = styled.Text`
@@ -40,8 +40,43 @@ export const PickerImagemButton = styled(Button)`
   margin-left: 32px;
 `;
 
+export const Form = styled.View`
+  width: 100%;
+  padding: 24px;
+`;
+
+export const Label = styled.Text`
+  font-size: 14px;
+  font-family: ${({ theme }) => theme.FONTS.TEXT};
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+
+  margin-bottom: 12px;
+`;
+
+export const InputGroup = styled.View`
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+export const InputGroupHeader = styled.View`
+  width: 100%;
+  
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const MaxCharacters = styled.Text`
+  font-size: 10px;
+  font-family: ${({ theme }) => theme.FONTS.TEXT};
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+  
+
+  margin-bottom: 12px;
+`;
+
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: theme.COLORS.GRADIENT
+  colors: theme.COLORS.GRADIENT,
 }))`
   width: 100%;
 
