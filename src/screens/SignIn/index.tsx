@@ -10,23 +10,27 @@ import { useAuth } from "../../hooks/useAuth";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 
-import { 
-  Container, 
-  Content, 
+import {
+  Container,
+  Content,
   Brand,
   Title,
   ForgotPasswordButton,
-  ForgotPasswordLabel 
+  ForgotPasswordLabel
 } from './styles';
 
 export function SignIn() {
-  const { SignIn, isLogging } = useAuth();
+  const { SignIn, ForgotPassword, isLogging } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   function handleSignIn() {
-    SignIn(email, password)
+    SignIn(email, password);
+  }
+
+  function handleForgotPassword() {
+    ForgotPassword(email);
   }
 
   return (
@@ -54,7 +58,7 @@ export function SignIn() {
             value={password}
           />
 
-          <ForgotPasswordButton>
+          <ForgotPasswordButton onPress={handleForgotPassword}>
             <ForgotPasswordLabel>Esqueci minha senha</ForgotPasswordLabel>
           </ForgotPasswordButton>
 
