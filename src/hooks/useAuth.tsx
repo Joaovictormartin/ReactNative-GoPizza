@@ -24,6 +24,7 @@ type AuthContextData = {
   isLogging: boolean;
   user: User | null;
   SignIn: (email: string, password: string) => Promise<void>;
+  SignOut: () => Promise<void>;
 }
 
 const USER_COLLECTION = '@gopizza:users';
@@ -33,6 +34,19 @@ const AuthContext = createContext({} as AuthContextData);
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLogging, setIsLogging] = useState(false);
+
+  async function loadUserStorageDate() {
+    setIsLogging(true);
+
+    const storedUser = await AsyncStorage.getItem(USER_COLLECTION)
+
+    if (storedUser) {
+      const userData = JSON.parse(storedUser) as User;
+      setUser(userData);
+    }
+
+    setIsLogging(false)
+  }
 
   async function SignIn(email: string, password: string) {
     if (!email || !password) {
@@ -76,18 +90,10 @@ function AuthProvider({ children }: AuthProviderProps) {
       .finally(() => setIsLogging(false))
   }
 
-  async function loadUserStorageDate() {
-    setIsLogging(true);
-
-    const storedUser = await AsyncStorage.getItem(USER_COLLECTION)
-    
-    if (storedUser) {
-      const userData = JSON.parse(storedUser) as User;
-      setUser(userData);
-      console.log(userData);
-    }
-
-    setIsLogging(false)
+  async function SignOut() {
+    await auth().signOut();
+    await AsyncStorage.removeItem(USER_COLLECTION);
+    setUser(null);
   }
 
   useEffect(() => {
@@ -95,7 +101,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ isLogging, user, SignIn }}>
+    <AuthContext.Provider value={{ isLogging, user, SignIn, SignOut }}>
       {children}
     </AuthContext.Provider>
   )
