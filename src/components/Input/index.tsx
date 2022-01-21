@@ -8,6 +8,5 @@ type Props = TextInputProps & {
 }
 
 export function Input({ type = 'primary', ...rest }: Props) {
-  //@ts-ignore
-  return <Container type="type" {...rest} />
+  return <Container type={type} {...rest} />
 }
