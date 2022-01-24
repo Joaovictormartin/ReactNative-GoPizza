@@ -29,8 +29,6 @@ export const Input = styled(TextInput)`
   padding-left: 12px;
 
   font-size: 14px;
-  font-family: ${({ theme }) => theme.FONTS.TEXT};
-  color: ${({ theme }) => theme.COLORS.TITLE};
 `;
 
 export const ButtonClearContainer = styled.TouchableOpacity`
