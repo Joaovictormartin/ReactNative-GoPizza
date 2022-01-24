@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
@@ -33,6 +33,30 @@ export const SignOutContainer = styled.TouchableOpacity``;
 export const SignOutIcon = styled(MaterialIcons)`
   font-size: 24px;
   color: ${({ theme }) => theme.COLORS.TITLE};
+`;
+
+export const MenuHeader = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 25px 24px 0;
+  padding-bottom: 22px;
+
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.COLORS.SHAPE};
+`;
+
+export const MenuTitle = styled.Text`
+  font-size: 22px;
+  font-family: ${({ theme }) => theme.FONTS.TITLE};
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+`;
+
+export const MenuItemsNumber = styled.Text`
+  font-size: 14px;
+  font-family: ${({ theme }) => theme.FONTS.TEXT};
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
 `;
 
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({

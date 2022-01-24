@@ -4,7 +4,7 @@ import { Platform, Alert } from "react-native";
 import happyEmojis from "../../assets/png/happy.png";
 
 import { useAuth } from "../../hooks/useAuth";
-import { Input } from "../../components/Input";
+import { Search } from "../../components/Search";
 import { Button } from "../../components/Button";
 
 import {
@@ -14,7 +14,10 @@ import {
   GreetingEmoji,
   GreetingText,
   SignOutContainer,
-  SignOutIcon
+  SignOutIcon,
+  MenuHeader,
+  MenuTitle,
+  MenuItemsNumber
 } from "./styles";
 
 export function Home() {
@@ -37,6 +40,12 @@ export function Home() {
         </SignOutContainer>
       </Header>
 
+      <Search onSearch={() => {}} onClear={() => {}}/>
+
+      <MenuHeader>
+        <MenuTitle>Cardápio</MenuTitle>
+        <MenuItemsNumber>32 pizzas</MenuItemsNumber>
+      </MenuHeader>
       
     </Container>
   );
