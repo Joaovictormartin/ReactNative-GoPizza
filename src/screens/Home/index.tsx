@@ -25,7 +25,8 @@ import {
 export function Home() {
   const { user, SignOut } = useAuth();
 
-  const [ pizzas, setPizzas ] = useState<ProductProps[]>([])
+  const [pizzas, setPizzas] = useState<ProductProps[]>([]);
+  const [search, setSearch] = useState("");
 
   const data = [
     {
@@ -66,13 +67,22 @@ export function Home() {
       );
   }
 
+  function handleSearch() {
+    fecthPizza(search);
+  }
+
+  function handleSearchClear() {
+    setSearch('');
+    fecthPizza('');
+  }
+
   function handleSignOut() {
     SignOut();
   }
 
   useEffect(() => {
-    fecthPizza('')
-  },[])
+    fecthPizza("");
+  }, []);
 
   return (
     <Container>
@@ -87,21 +97,26 @@ export function Home() {
         </SignOutContainer>
       </Header>
 
-      <Search onSearch={() => {}} onClear={() => {}} />
+      <Search
+        value={search}
+        onChangeText={setSearch}
+        onSearch={handleSearch}
+        onClear={handleSearchClear}
+      />
 
       <MenuHeader>
         <MenuTitle>Cardápio</MenuTitle>
-        <MenuItemsNumber>32 pizzas</MenuItemsNumber>
+        <MenuItemsNumber>{pizzas.length} pizzas</MenuItemsNumber>
       </MenuHeader>
 
       <FlatList
         data={pizzas}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ProductCard data={item} />}
-        contentContainerStyle={{ 
-          paddingTop: 20, 
+        contentContainerStyle={{
+          paddingTop: 20,
           paddingBottom: 125,
-          marginHorizontal: 24, 
+          marginHorizontal: 24,
         }}
       />
     </Container>
