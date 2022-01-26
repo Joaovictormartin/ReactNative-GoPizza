@@ -6,11 +6,20 @@ export const Container = styled.KeyboardAvoidingView`
   flex: 1;
 `;
 
+export const Photo = styled.Image`
+  width: 240px;
+  height: 240px;
+
+  border-radius: 120px;
+
+  align-self: center;
+  position: relative;
+  top: -120px;
+`;
+
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
   colors: theme.COLORS.GRADIENT,
 }))`
   width: 100%;
-  height: 204px;
-
   padding: ${getStatusBarHeight() + 34}px 24px 0;
 `;
