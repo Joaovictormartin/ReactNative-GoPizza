@@ -120,6 +120,7 @@ export function Home() {
       <FlatList
         data={pizzas}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         contentContainerStyle={{
           paddingTop: 20,
