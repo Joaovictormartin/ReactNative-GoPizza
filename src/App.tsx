@@ -9,8 +9,6 @@ import theme from "./theme";
 import { Routes } from './routes';
 import { AppProvider } from "./hooks";
 
-import { Home } from "./screens/Home";
-
 export default function App() {
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
