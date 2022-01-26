@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Alert, FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import happyEmojis from "../../assets/png/happy.png";
 
@@ -86,9 +86,11 @@ export function Home() {
     navigate("product", {})
   }
 
-  useEffect(() => {
-    fecthPizza("");
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fecthPizza("")
+    },[])
+  );
 
   return (
     <Container>
