@@ -112,10 +112,7 @@ export function Product() {
           g: priceSizeG,
         },
       })
-      .then(() => {
-        Alert.alert("Cadastro", "Pizza cadastrada com sucesso");
-        navigate("home");
-      })
+      .then(() => navigate("home"))
       .catch(() =>
         Alert.alert("Cadastro", "Não foi possível cadastrar a pizza")
       );
