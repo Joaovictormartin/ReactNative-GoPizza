@@ -55,6 +55,7 @@ export function Product() {
   const [photo_path, setPhoto_Path] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  //função para carregar uma img da galeria
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -71,6 +72,7 @@ export function Product() {
     }
   }
 
+  //função para cadastrar uma pizza
   async function handleAdd() {
     if (!name.trim()) {
       return Alert.alert("Cadastro", "Informe o nome da pizza");
@@ -110,12 +112,29 @@ export function Product() {
           g: priceSizeG,
         },
       })
-      .then(() => Alert.alert("Cadastro", "Pizza cadastrada com sucesso"))
+      .then(() => {
+        Alert.alert("Cadastro", "Pizza cadastrada com sucesso");
+        navigate("home");
+      })
       .catch(() =>
         Alert.alert("Cadastro", "Não foi possível cadastrar a pizza")
       );
 
     setIsLoading(false);
+  }
+
+  //função para deletar uma pizza
+  function handleDelete() {
+    firestore()
+      .collection("pizzas")
+      .doc(id)
+      .delete()
+      .then(() => {
+        storage()
+          .ref(photo_path)
+          .delete()
+          .then(() => navigate("home"));
+      });
   }
 
   useEffect(() => {
@@ -145,11 +164,11 @@ export function Product() {
         <Title>Cadastrar</Title>
 
         {id ? (
-          <DeletarContainer>
+          <DeletarContainer onPress={handleDelete}>
             <DeletarLabel>Deletar</DeletarLabel>
           </DeletarContainer>
         ) : (
-          <View/>
+          <View />
         )}
       </Header>
 
@@ -175,7 +194,7 @@ export function Product() {
           <InputGroup>
             <InputGroupHeader>
               <Label>Descrição</Label>
-              <MaxCharacters>0 de 60 caracteres</MaxCharacters>
+              <MaxCharacters>{description.length} de 60 caracteres</MaxCharacters>
             </InputGroupHeader>
 
             <Input
