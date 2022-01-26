@@ -10,12 +10,13 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { InputPrice } from "../../components/InputPrice";
 import { ButtonBack } from "../../components/ButtonBack";
-import { ProductProps } from '../../components/ProductCard';
+import { ProductProps } from "../../components/ProductCard";
 
 import {
   Container,
   Header,
   Title,
+  View,
   DeletarContainer,
   DeletarLabel,
   Upload,
@@ -37,8 +38,8 @@ type PizzaResponse = ProductProps & {
     p: string;
     m: string;
     g: string;
-  }
-}
+  };
+};
 
 export function Product() {
   const routes = useRoute();
@@ -118,43 +119,51 @@ export function Product() {
   }
 
   useEffect(() => {
-    if(id) {
+    if (id) {
       firestore()
-        .collection('pizzas')
+        .collection("pizzas")
         .doc(id)
         .get()
-        .then(response => {
+        .then((response) => {
           const product = response.data() as PizzaResponse;
 
-          setName(product.name)
-          setImage(product.photo_url)
-          setDescription(product.description)
-          setPriceSizeP(product.prices_sizes.p)
-          setPriceSizeM(product.prices_sizes.m)
-          setPriceSizeG(product.prices_sizes.g)
-          setPhoto_Path(product.photo_path)
-        })
+          setName(product.name);
+          setImage(product.photo_url);
+          setDescription(product.description);
+          setPriceSizeP(product.prices_sizes.p);
+          setPriceSizeM(product.prices_sizes.m);
+          setPriceSizeG(product.prices_sizes.g);
+          setPhoto_Path(product.photo_path);
+        });
     }
-  },[id])
+  }, [id]);
 
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Header>
         <ButtonBack onPress={() => goBack()} />
         <Title>Cadastrar</Title>
-        <DeletarContainer>
-          <DeletarLabel>Deletar</DeletarLabel>
-        </DeletarContainer>
+
+        {id ? (
+          <DeletarContainer>
+            <DeletarLabel>Deletar</DeletarLabel>
+          </DeletarContainer>
+        ) : (
+          <View/>
+        )}
       </Header>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Upload>
           <Photo uri={image} />
-          <PickerImagemButton
-            type="secondary"
-            title="Carregar"
-            onPress={handlePickerImage}
-          />
+
+          {!id && (
+            <PickerImagemButton
+              type="secondary"
+              title="Carregar"
+              onPress={handlePickerImage}
+            />
+          )}
         </Upload>
 
         <Form>
@@ -200,11 +209,13 @@ export function Product() {
             />
           </InputGroup>
 
-          <Button
-            title="Cadastrar pizza"
-            isLoaded={isLoading}
-            onPress={handleAdd}
-          />
+          {!id && (
+            <Button
+              title="Cadastrar pizza"
+              isLoaded={isLoading}
+              onPress={handleAdd}
+            />
+          )}
         </Form>
       </ScrollView>
     </Container>

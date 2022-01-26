@@ -19,6 +19,10 @@ export const DeletarContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.6,
 })``;
 
+export const View = styled.View`
+  width: 20px;
+`;
+
 export const DeletarLabel = styled.Text`
   font-size: 14px;
   font-family: ${({ theme }) => theme.FONTS.TEXT};
