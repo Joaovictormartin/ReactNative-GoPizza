@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Platform, Alert, FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 
 import happyEmojis from "../../assets/png/happy.png";
 
 import { useAuth } from "../../hooks/useAuth";
 import { Search } from "../../components/Search";
-import { Button } from "../../components/Button";
 import { ProductCard, ProductProps } from "../../components/ProductCard";
 
 import {
@@ -24,25 +24,12 @@ import {
 
 export function Home() {
   const { user, SignOut } = useAuth();
+  const { navigate } = useNavigation();
 
   const [pizzas, setPizzas] = useState<ProductProps[]>([]);
   const [search, setSearch] = useState("");
 
-  const data = [
-    {
-      id: "1",
-      name: "Pizza",
-      description: "Ingredientes dessa pizza",
-      photo_url: "https://github.com/joaovictormartin.png",
-    },
-    {
-      id: "2",
-      name: "Pizza",
-      description: "Ingredientes dessa pizza",
-      photo_url: "https://github.com/joaovictormartin.png",
-    },
-  ];
-
+  //função para carregar as pizza do BD
   function fecthPizza(value: string) {
     const formattedValue = value.toLocaleLowerCase().trim();
 
@@ -67,17 +54,30 @@ export function Home() {
       );
   }
 
+  //função para pesquisar
   function handleSearch() {
     fecthPizza(search);
   }
 
+  //função para limpar o campo de pesquisar
   function handleSearchClear() {
-    setSearch('');
-    fecthPizza('');
+    setSearch("");
+    fecthPizza("");
   }
 
+  //função para fazer Logout
   function handleSignOut() {
     SignOut();
+  }
+
+  //função para ir para teça de product
+  function handleOpen(id: string) {
+    navigate("product", { id });
+  }
+
+  //função para renderizar a lista
+  function renderItem({ item }) {
+    return <ProductCard data={item} onPress={() => handleOpen(item.id)} />;
   }
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export function Home() {
       <FlatList
         data={pizzas}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ProductCard data={item} />}
+        renderItem={renderItem}
         contentContainerStyle={{
           paddingTop: 20,
           paddingBottom: 125,
