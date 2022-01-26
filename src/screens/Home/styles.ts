@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import { getBottomSpace, getStatusBarHeight } from "react-native-iphone-x-helper";
 
 import { Button } from "../../components/Button";
 
@@ -57,6 +57,11 @@ export const MenuItemsNumber = styled.Text`
   font-size: 14px;
   font-family: ${({ theme }) => theme.FONTS.TEXT};
   color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+`;
+
+export const NewProductButton = styled(Button)`
+  margin: 0 24px;
+  margin-bottom: ${getBottomSpace() + 12}px;
 `;
 
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({

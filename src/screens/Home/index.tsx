@@ -20,6 +20,7 @@ import {
   MenuHeader,
   MenuTitle,
   MenuItemsNumber,
+  NewProductButton
 } from "./styles";
 
 export function Home() {
@@ -80,6 +81,11 @@ export function Home() {
     return <ProductCard data={item} onPress={() => handleOpen(item.id)} />;
   }
 
+  //função para cadastrar product
+  function handleAdd() {
+    navigate("product", {})
+  }
+
   useEffect(() => {
     fecthPizza("");
   }, []);
@@ -118,6 +124,12 @@ export function Home() {
           paddingBottom: 125,
           marginHorizontal: 24,
         }}
+      />
+
+      <NewProductButton
+        type="secondary"
+        title="Cadastrar pizza"
+        onPress={handleAdd}
       />
     </Container>
   );
