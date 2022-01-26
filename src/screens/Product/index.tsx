@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { Platform, ScrollView, Alert } from "react-native";
-import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+import firestore from "@react-native-firebase/firestore";
+import { Platform, ScrollView, Alert } from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { Photo } from "../../components/Photo";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { InputPrice } from "../../components/InputPrice";
 import { ButtonBack } from "../../components/ButtonBack";
+import { ProductProps } from '../../components/ProductCard';
 
 import {
   Container,
@@ -25,13 +27,31 @@ import {
   MaxCharacters,
 } from "./styles";
 
+interface ProductPropsRoutes {
+  id?: string;
+}
+
+type PizzaResponse = ProductProps & {
+  photo_path: string;
+  prices_sizes: {
+    p: string;
+    m: string;
+    g: string;
+  }
+}
+
 export function Product() {
+  const routes = useRoute();
+  const { goBack, navigate } = useNavigation();
+  const { id } = routes.params as ProductPropsRoutes;
+
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [priceSizeP, setPriceSizeP] = useState("");
   const [priceSizeM, setPriceSizeM] = useState("");
   const [priceSizeG, setPriceSizeG] = useState("");
+  const [photo_path, setPhoto_Path] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   async function handlePickerImage() {
@@ -76,7 +96,7 @@ export function Product() {
     const photo_url = await reference.getDownloadURL();
 
     firestore()
-      .collection('pizzas')
+      .collection("pizzas")
       .add({
         name,
         name_insensitive: name.toLocaleLowerCase().trim(),
@@ -87,18 +107,40 @@ export function Product() {
           p: priceSizeP,
           m: priceSizeM,
           g: priceSizeG,
-        }
+        },
       })
-      .then(() => Alert.alert('Cadastro', 'Pizza cadastrada com sucesso'))
-      .catch(() => Alert.alert('Cadastro', 'Não foi possível cadastrar a pizza'))
+      .then(() => Alert.alert("Cadastro", "Pizza cadastrada com sucesso"))
+      .catch(() =>
+        Alert.alert("Cadastro", "Não foi possível cadastrar a pizza")
+      );
 
     setIsLoading(false);
   }
 
+  useEffect(() => {
+    if(id) {
+      firestore()
+        .collection('pizzas')
+        .doc(id)
+        .get()
+        .then(response => {
+          const product = response.data() as PizzaResponse;
+
+          setName(product.name)
+          setImage(product.photo_url)
+          setDescription(product.description)
+          setPriceSizeP(product.prices_sizes.p)
+          setPriceSizeM(product.prices_sizes.m)
+          setPriceSizeG(product.prices_sizes.g)
+          setPhoto_Path(product.photo_path)
+        })
+    }
+  },[id])
+
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Header>
-        <ButtonBack />
+        <ButtonBack onPress={() => goBack()} />
         <Title>Cadastrar</Title>
         <DeletarContainer>
           <DeletarLabel>Deletar</DeletarLabel>
