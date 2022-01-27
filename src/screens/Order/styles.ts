@@ -17,6 +17,17 @@ export const Photo = styled.Image`
   top: -120px;
 `;
 
+export const WrapperRadioButton = styled.View`
+  width: 100%;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+  margin-bottom: 40px;
+`;
+
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
   colors: theme.COLORS.GRADIENT,
 }))`
