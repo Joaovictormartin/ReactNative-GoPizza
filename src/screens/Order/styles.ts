@@ -6,6 +6,12 @@ export const Container = styled.KeyboardAvoidingView`
   flex: 1;
 `;
 
+export const ContentScrool = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})`
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
+`;
+
 export const Photo = styled.Image`
   width: 240px;
   height: 240px;
@@ -17,15 +23,53 @@ export const Photo = styled.Image`
   top: -120px;
 `;
 
-export const WrapperRadioButton = styled.View`
+export const Sizes = styled.View`
   width: 100%;
-
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-
-  padding: 0 24px;
   margin-bottom: 40px;
+`;
+
+export const Form = styled.View`
+  width: 100%;
+  padding: 24px;
+  margin-top: -120px;
+`;
+
+export const Title = styled.Text`
+  font-size: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+  font-family: ${({ theme }) => theme.FONTS.TITLE};
+`;
+
+export const Label = styled.Text`
+  font-size: 14px;
+  margin-bottom: 16px;
+
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+  font-family: ${({ theme }) => theme.FONTS.TEXT};
+`;
+
+export const FormRow = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const InputGroup = styled.View`
+  width: 48%;
+`;
+
+export const Price = styled.Text`
+  font-size: 14px;
+  margin: 24px 0;
+  align-self: flex-end;
+
+  color: ${({ theme }) => theme.COLORS.SECONDARY_900};
+  font-family: ${({ theme }) => theme.FONTS.TEXT};
 `;
 
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
