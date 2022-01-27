@@ -14,6 +14,12 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.COLORS.TITLE};
   font-family: ${({ theme }) => theme.FONTS.TITLE};
 `;
+export const Separator = styled.View`
+  width: 100%;
+  height: 1px;
+
+  background-color: ${({ theme }) => theme.COLORS.SHAPE};
+`;
 
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
   colors: theme.COLORS.GRADIENT,
