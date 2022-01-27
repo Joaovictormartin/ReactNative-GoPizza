@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 //import { useNavigation } from "@react-navigation/native";
 
-import { ButtonBack } from "../../components/ButtonBack";
-
 import {
   Container,
   Header,
-
+  Title,
+  
 } from "./styles";
 
 export function Orders() {
@@ -15,7 +14,7 @@ export function Orders() {
   return (
     <Container>
       <Header>
-        <ButtonBack onPress={() => {}} />
+        <Title>Pedidos feitos</Title>
       </Header>
 
     </Container>
