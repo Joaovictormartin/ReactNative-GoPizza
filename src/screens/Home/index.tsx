@@ -5,6 +5,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import happyEmojis from "../../assets/png/happy.png";
 
+import { Load } from "../../components/Load";
 import { useAuth } from "../../hooks/useAuth";
 import { Search } from "../../components/Search";
 import { ProductCard, ProductProps } from "../../components/ProductCard";
@@ -29,6 +30,7 @@ export function Home() {
 
   const [pizzas, setPizzas] = useState<ProductProps[]>([]);
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   //função para carregar as pizza do BD
   function fecthPizza(value: string) {
@@ -52,7 +54,8 @@ export function Home() {
       })
       .catch(() =>
         Alert.alert("Consulta", "Não foi possível realizar a consulta")
-      );
+      )
+      .finally(() => setIsLoading(false));
   }
 
   //função para pesquisar
@@ -73,9 +76,7 @@ export function Home() {
 
   //função para ir para teça de product
   function handleOpen(id: string) {
-    user.isAdmin 
-    ? navigate("product", { id })
-    : navigate("order", { id })
+    user.isAdmin ? navigate("product", { id }) : navigate("order", { id });
   }
 
   //função para renderizar a lista
@@ -119,18 +120,22 @@ export function Home() {
         <MenuItemsNumber>{pizzas.length} pizzas</MenuItemsNumber>
       </MenuHeader>
 
-      <FlatList
-        data={pizzas}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        renderItem={renderItem}
-        contentContainerStyle={{
-          paddingTop: 20,
-          paddingBottom: 125,
-          marginHorizontal: 24,
-        }}
-      />
-      
+      {isLoading ? (
+        <Load />
+      ) : (
+        <FlatList
+          data={pizzas}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          renderItem={renderItem}
+          contentContainerStyle={{
+            paddingTop: 20,
+            paddingBottom: 125,
+            marginHorizontal: 24,
+          }}
+        />
+      )}
+
       {user.isAdmin && (
         <NewProductButton
           type="secondary"
