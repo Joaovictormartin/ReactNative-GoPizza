@@ -20,7 +20,7 @@ import {
   MenuHeader,
   MenuTitle,
   MenuItemsNumber,
-  NewProductButton
+  NewProductButton,
 } from "./styles";
 
 export function Home() {
@@ -83,13 +83,13 @@ export function Home() {
 
   //função para cadastrar product
   function handleAdd() {
-    navigate("product", {})
+    navigate("product", {});
   }
 
   useFocusEffect(
     useCallback(() => {
-      fecthPizza("")
-    },[])
+      fecthPizza("");
+    }, [])
   );
 
   return (
@@ -128,12 +128,14 @@ export function Home() {
           marginHorizontal: 24,
         }}
       />
-
-      <NewProductButton
-        type="secondary"
-        title="Cadastrar pizza"
-        onPress={handleAdd}
-      />
+      
+      {user.isAdmin && (
+        <NewProductButton
+          type="secondary"
+          title="Cadastrar pizza"
+          onPress={handleAdd}
+        />
+      )}
     </Container>
   );
 }
