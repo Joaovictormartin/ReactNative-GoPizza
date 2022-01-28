@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { Platform } from "react-native";
-//import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import { Platform, Alert } from "react-native";
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { PIZZAS_TYPES } from "../../utils/pizzaTypes";
 
+import { Load } from "../../components/Load";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { ButtonBack } from "../../components/ButtonBack";
 import { RadioButton } from "../../components/RadioButton";
+import { ProductProps } from "../../components/ProductCard";
 
 import {
   Container,
@@ -23,10 +26,24 @@ import {
   Price,
 } from "./styles";
 
+type OrderNavigationProps = {
+  id: string;
+};
+
+type PizzaResponse = ProductProps & {
+  prices_sizes: {
+    [key: string]: number;
+  }
+};
+
 export function Order() {
-  //const { navigate, goBack } = useNavigation();
+  const { navigate, goBack } = useNavigation();
+  const route = useRoute();
+  const { id } = route.params as OrderNavigationProps;
 
   const [size, setSizes] = useState("");
+  const [pizza, setPizza] = useState<PizzaResponse>({} as PizzaResponse);
+  const [isLoading, setIsLoading] = useState(true);
 
   function SizesRadio() {
     return PIZZAS_TYPES.map((item) => (
@@ -39,37 +56,51 @@ export function Order() {
     ));
   }
 
+  useEffect(() => {
+    firestore()
+      .collection('pizzas')
+      .doc(id)
+      .get()
+      .then(resp => setPizza(resp.data() as PizzaResponse))
+      .catch(() => Alert.alert('Pedido', 'Não foi possível carregar o producto'))
+      .finally(() => setIsLoading(false))
+  },[id])
+
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ContentScrool>
         <Header>
-          <ButtonBack onPress={() => {}} style={{ marginBottom: 108 }} />
+          <ButtonBack onPress={() => goBack()} style={{ marginBottom: 108 }} />
         </Header>
 
-        <Photo source={{ uri: "https://github.com/joaovictormartin.png" }} />
+        {isLoading ? <Load/> : (
+          <>
+            <Photo source={{ uri: pizza?.photo_url }} />
 
-        <Form>
-          <Title>Nome da Pizza</Title>
-          <Label>Selecione um tamanho</Label>
+            <Form>
+              <Title>{pizza?.name}</Title>
+              <Label>Selecione um tamanho</Label>
 
-          <Sizes>{SizesRadio()}</Sizes>
+              <Sizes>{SizesRadio()}</Sizes>
 
-          <FormRow>
-            <InputGroup>
-              <Label>Número da mesa</Label>
-              <Input keyboardType="numeric" />
-            </InputGroup>
+              <FormRow>
+                <InputGroup>
+                  <Label>Número da mesa</Label>
+                  <Input keyboardType="numeric" />
+                </InputGroup>
 
-            <InputGroup>
-              <Label>Quantidade</Label>
-              <Input keyboardType="numeric" />
-            </InputGroup>
-          </FormRow>
+                <InputGroup>
+                  <Label>Quantidade</Label>
+                  <Input keyboardType="numeric" />
+                </InputGroup>
+              </FormRow>
 
-          <Price>R$ 10,00</Price>
+              <Price>R$ 10,00</Price>
 
-          <Button title="Confirmar pedido" />
-        </Form>
+              <Button title="Confirmar pedido" />
+            </Form>
+          </>
+        )}
       </ContentScrool>
     </Container>
   );
