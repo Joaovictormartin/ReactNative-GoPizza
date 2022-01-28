@@ -5,6 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 import { Platform, ScrollView, Alert } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
+import { Load } from "../../components/Load";
 import { Photo } from "../../components/Photo";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
@@ -54,6 +55,7 @@ export function Product() {
   const [priceSizeG, setPriceSizeG] = useState("");
   const [photo_path, setPhoto_Path] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingScren, setIsLoadingScren] = useState(true);
 
   //função para carregar uma img da galeria
   async function handlePickerImage() {
@@ -150,9 +152,12 @@ export function Product() {
           setPriceSizeM(product.prices_sizes.m);
           setPriceSizeG(product.prices_sizes.g);
           setPhoto_Path(product.photo_path);
-        });
+        })
+        .finally(() => setIsLoadingScren(false));
+    } else {
+      setIsLoadingScren(false)
     }
-  }, [id]);
+  }, []);
 
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -169,71 +174,79 @@ export function Product() {
         )}
       </Header>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Upload>
-          <Photo uri={image} />
+      {isLoadingScren ? (
+        <Load />
+      ) : (
+        <>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Upload>
+              <Photo uri={image} />
 
-          {!id && (
-            <PickerImagemButton
-              type="secondary"
-              title="Carregar"
-              onPress={handlePickerImage}
-            />
-          )}
-        </Upload>
+              {!id && (
+                <PickerImagemButton
+                  type="secondary"
+                  title="Carregar"
+                  onPress={handlePickerImage}
+                />
+              )}
+            </Upload>
 
-        <Form>
-          <InputGroup>
-            <Label>Nome</Label>
-            <Input value={name} onChangeText={setName} />
-          </InputGroup>
+            <Form>
+              <InputGroup>
+                <Label>Nome</Label>
+                <Input value={name} onChangeText={setName} />
+              </InputGroup>
 
-          <InputGroup>
-            <InputGroupHeader>
-              <Label>Descrição</Label>
-              <MaxCharacters>{description.length} de 60 caracteres</MaxCharacters>
-            </InputGroupHeader>
+              <InputGroup>
+                <InputGroupHeader>
+                  <Label>Descrição</Label>
+                  <MaxCharacters>
+                    {description.length} de 60 caracteres
+                  </MaxCharacters>
+                </InputGroupHeader>
 
-            <Input
-              multiline
-              maxLength={60}
-              value={description}
-              style={{ height: 80 }}
-              onChangeText={setDescription}
-            />
-          </InputGroup>
+                <Input
+                  multiline
+                  maxLength={60}
+                  value={description}
+                  style={{ height: 80 }}
+                  onChangeText={setDescription}
+                />
+              </InputGroup>
 
-          <InputGroup>
-            <Label>Tamanhos e preços</Label>
+              <InputGroup>
+                <Label>Tamanhos e preços</Label>
 
-            <InputPrice
-              size="P"
-              value={priceSizeP}
-              onChangeText={setPriceSizeP}
-            />
+                <InputPrice
+                  size="P"
+                  value={priceSizeP}
+                  onChangeText={setPriceSizeP}
+                />
 
-            <InputPrice
-              size="M"
-              value={priceSizeM}
-              onChangeText={setPriceSizeM}
-            />
+                <InputPrice
+                  size="M"
+                  value={priceSizeM}
+                  onChangeText={setPriceSizeM}
+                />
 
-            <InputPrice
-              size="G"
-              value={priceSizeG}
-              onChangeText={setPriceSizeG}
-            />
-          </InputGroup>
+                <InputPrice
+                  size="G"
+                  value={priceSizeG}
+                  onChangeText={setPriceSizeG}
+                />
+              </InputGroup>
 
-          {!id && (
-            <Button
-              title="Cadastrar pizza"
-              isLoaded={isLoading}
-              onPress={handleAdd}
-            />
-          )}
-        </Form>
-      </ScrollView>
+              {!id && (
+                <Button
+                  title="Cadastrar pizza"
+                  isLoaded={isLoading}
+                  onPress={handleAdd}
+                />
+              )}
+            </Form>
+          </ScrollView>
+        </>
+      )}
     </Container>
   );
 }
