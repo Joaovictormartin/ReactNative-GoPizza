@@ -73,7 +73,9 @@ export function Home() {
 
   //função para ir para teça de product
   function handleOpen(id: string) {
-    navigate("product", { id });
+    user.isAdmin 
+    ? navigate("product", { id })
+    : navigate("order", { id })
   }
 
   //função para renderizar a lista
