@@ -43,7 +43,11 @@ export function Order() {
 
   const [size, setSizes] = useState("");
   const [pizza, setPizza] = useState<PizzaResponse>({} as PizzaResponse);
+  const [quantity, setQuantity] = useState(0);
+  const [tabNumber, setTabNumber] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  const amount = size ? pizza.prices_sizes[size] * quantity : '0,00';
 
   function SizesRadio() {
     return PIZZAS_TYPES.map((item) => (
@@ -86,16 +90,22 @@ export function Order() {
               <FormRow>
                 <InputGroup>
                   <Label>Número da mesa</Label>
-                  <Input keyboardType="numeric" />
+                  <Input 
+                  keyboardType="numeric" 
+                  onChangeText={setTabNumber}
+                  />
                 </InputGroup>
 
                 <InputGroup>
                   <Label>Quantidade</Label>
-                  <Input keyboardType="numeric" />
+                  <Input 
+                  keyboardType="numeric" 
+                  onChangeText={(value) => setQuantity(Number(value))}
+                  />
                 </InputGroup>
               </FormRow>
 
-              <Price>R$ 10,00</Price>
+              <Price>R$ {amount}</Price>
 
               <Button title="Confirmar pedido" />
             </Form>
