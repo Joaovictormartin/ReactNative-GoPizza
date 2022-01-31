@@ -50,7 +50,7 @@ export function Order() {
   const [isLoading, setIsLoading] = useState(true);
   const [sendingOrder, setSendingOrder] = useState(false);
 
-  const amount = size ? pizza.prices_sizes[size] * quantity : "0,00";
+  const amount = size ? pizza.prices_sizes[size] * quantity : "R$ 0,00";
 
   function handleOrder() {
     if (!size) {
@@ -137,7 +137,7 @@ export function Order() {
                 </InputGroup>
               </FormRow>
 
-              <Price>R$ {amount}</Price>
+              <Price>{amount}</Price>
 
               <Button
                 title="Confirmar pedido"
