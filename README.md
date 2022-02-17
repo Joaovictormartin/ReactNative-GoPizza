@@ -21,5 +21,8 @@ Splash, Login, Home, Pedido, Pedidos e Cadastro.
 
 ## Layout
 <div align="center">
-<img src=""
+  <p>Modo para o Adm</p>
+  <img src="https://github.com/Joaovictormartin/Assets_Geral/blob/main/RN%20-%20GoPizza/Adm.gif"/>
+  <p>Modo para o Garçom</p>
+  <img src="https://github.com/Joaovictormartin/Assets_Geral/blob/main/RN%20-%20GoPizza/Gar%C3%A7om.gif"/>
 </div>
